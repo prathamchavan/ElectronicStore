@@ -26,10 +26,11 @@ public class UserController {
 
     //update
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") String userId,
-                                              @RequestBody UserDto UserDto)
+    public ResponseEntity<UserDto> updateUser(
+            @PathVariable("userId") String userId,
+            @RequestBody UserDto UserDto)
     {
-      UserDto updatedUserDto =  userService.updateUser(new UserDto(), userId);
+      UserDto updatedUserDto =  userService.updateUser(UserDto, userId);
       return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
     }
     //delete
