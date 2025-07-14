@@ -1,4 +1,5 @@
 package com.electronic.store.Electronic.Store.services;
+import com.electronic.store.Electronic.Store.dtos.PageableResponse;
 import com.electronic.store.Electronic.Store.dtos.UserDto;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     //get all user
 
-    List<UserDto> getAllUser();
+    PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir);
     //get single user by id
 
     UserDto getUserById(String userId);
