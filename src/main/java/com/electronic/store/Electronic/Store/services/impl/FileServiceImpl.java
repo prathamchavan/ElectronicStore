@@ -1,6 +1,6 @@
 package com.electronic.store.Electronic.Store.services.impl;
 
-import com.electronic.store.Electronic.Store.exceptions.BadApiRequest;
+import com.electronic.store.Electronic.Store.exceptions.BadApiRequestException;
 import com.electronic.store.Electronic.Store.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,24 +20,26 @@ public class FileServiceImpl implements FileService {
     @Override
     public String uploadImage(MultipartFile file, String path) throws IOException {
 
+        //abc.png
         String originalFilename = file.getOriginalFilename();
         logger.info("Filename : {}", originalFilename);
-
         String filename = UUID.randomUUID().toString();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileNameWithExtension = filename+extension;
-        String fullPathWithFileName = path + File.separator + fileNameWithExtension;
+        String fullPathWithFileName = path + fileNameWithExtension;
 
+
+        logger.info("full image path: {} ", fullPathWithFileName);
         if(extension.equalsIgnoreCase(".png")||extension.equalsIgnoreCase(".jpg")||extension.equalsIgnoreCase(".jpeg"))
         {
             //file save
+            logger.info("file extension is {}", extension);
             File folder = new File(path);
 
             if(!folder.exists())
             {
                 //create the folder
                 folder.mkdirs();
-
             }
 
             //upload
@@ -46,7 +48,7 @@ public class FileServiceImpl implements FileService {
             return fileNameWithExtension;
 
         }else{
-            throw new BadApiRequest("File with this "+extension+" is not allowed !!");
+            throw new BadApiRequestException("File with this "+extension+" is not allowed !!");
         }
 
 
@@ -60,4 +62,6 @@ public class FileServiceImpl implements FileService {
 
         return inputStream;
     }
+
+
 }
