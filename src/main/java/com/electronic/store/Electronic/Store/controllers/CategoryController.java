@@ -1,14 +1,17 @@
 package com.electronic.store.Electronic.Store.controllers;
 
-import com.electronic.store.Electronic.Store.dtos.ApiResponseMessage;
-import com.electronic.store.Electronic.Store.dtos.CategoryDto;
-import com.electronic.store.Electronic.Store.dtos.PageableResponse;
+import com.electronic.store.Electronic.Store.dtos.*;
 import com.electronic.store.Electronic.Store.services.CategoryService;
+import com.electronic.store.Electronic.Store.services.FileService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/categories")
@@ -17,9 +20,15 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private FileService fileService;
+
+    @Value("${category.image.path}")
+    private String imageUploadPath;
+
     //create
     @PostMapping
-    public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto)
+    public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto)
     {
         //call service to save object
         CategoryDto categoryDto1 = categoryService.create(categoryDto);
@@ -51,7 +60,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<PageableResponse<CategoryDto>> getAll(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "0", required = false) int pageSize,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = "title", required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
     )
@@ -68,5 +77,10 @@ public class CategoryController {
         CategoryDto categoryDto=categoryService.get(categoryId);
         return ResponseEntity.ok(categoryDto);
     }
+
+    //category image upload
+
+
+    //category image serving
 
 }
